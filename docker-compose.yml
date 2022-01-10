@@ -1,0 +1,23 @@
+version: '3'
+services:
+  authorizer:
+    image: authorizer
+    build:
+      context: .
+      dockerfile: ./infra/docker/authorizer.dockerfile
+    tty: true
+    env_file:
+      - .env
+    volumes:
+      - ./app:/var/task/app
+      - ./scripts:/var/task/scripts
+      - ./mypy.ini:/var/task/mypy.ini
+      # For local auth with aws, assuming credential file exists
+      - $HOME/.aws/credentials:/root/.aws/credentials:ro
+    expose:
+      - "80"
+    ports:
+      - 0.0.0.0:8888:80
+    # Override lambda entry point to revert to default docker behaviour
+    entrypoint: ""
+    command: ""

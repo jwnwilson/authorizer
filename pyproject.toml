@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "athourizer"
+version = "0.1.0"
+description = ""
+authors = ["Noel Wilson <jwnwilson@hotmail.co.uk>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+boto3 = "^1.20.24"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+mypy = "^0.770"
+black = "^21.12b0"
+isort = "^5.10.1"
+boto3-stubs = "^1.20.24"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
