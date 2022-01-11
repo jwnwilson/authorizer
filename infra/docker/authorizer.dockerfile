@@ -16,4 +16,4 @@ RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; els
 ADD ./app ${LAMBDA_TASK_ROOT}/app
 
 ENV PYTHONPATH ${LAMBDA_TASK_ROOT}/app
-CMD ["app.main.lambda_handler"]
+CMD ["app.adapter.into.fastapi.lambda.lambda_handler"]

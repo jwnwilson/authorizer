@@ -10,6 +10,16 @@ provider "aws" {
   region  = var.aws_region
 }
 
+module "api_gateway" {
+  source = "./modules/api/aws"
+
+  environment       = var.environment
+  lambda_invoke_arn = module.authorizer.lambda_function_invoke_arn
+  lambda_name       = module.authorizer.lambda_function_name
+  domain            = "jwnwilson.co.uk"
+  api_subdomain     = "auth-${var.environment}" 
+}
+
 module "authorizer" {
   source                  = "terraform-aws-modules/lambda/aws"
 
