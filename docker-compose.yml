@@ -9,9 +9,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./app:/var/task/app
-      - ./scripts:/var/task/scripts
-      - ./mypy.ini:/var/task/mypy.ini
+      - .:/var/task
       # For local auth with aws, assuming credential file exists
       - $HOME/.aws/credentials:/root/.aws/credentials:ro
     expose:
@@ -20,4 +18,4 @@ services:
       - 0.0.0.0:8888:80
     # Override lambda entry point to revert to default docker behaviour
     entrypoint: ""
-    command: ""
+    command: "uvicorn app.adapter.into.fastapi.main:app --host 0.0.0.0 --port 80 --reload --debug"
