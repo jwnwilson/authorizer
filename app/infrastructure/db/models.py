@@ -1,7 +1,4 @@
-from fastapi_users.db import (
-    SQLAlchemyBaseOAuthAccountTable,
-    SQLAlchemyBaseUserTable
-)
+from fastapi_users.db import SQLAlchemyBaseOAuthAccountTable, SQLAlchemyBaseUserTable
 from sqlalchemy.orm import relationship
 
 from .base import BaseModel

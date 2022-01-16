@@ -1,25 +1,22 @@
 from typing import AsyncGenerator
 
+import sqlalchemy as sa
+from config import settings
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users_db_sqlalchemy.guid import GUID
-
-import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
-
+from sqlalchemy.orm import sessionmaker
 from utils import utcnow
 
 from app.ports.users import UserDB
-from config import settings
-
 
 engine = create_async_engine(
     settings.DB_DSN,
     echo=settings.DB_ECHO,
     pool_size=settings.DB_POOL_SIZE,
-    max_overflow=settings.DB_MAX_OVERFLOW
+    max_overflow=settings.DB_MAX_OVERFLOW,
 )
 async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 Base: DeclarativeMeta = declarative_base()
@@ -37,6 +34,7 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     from .models import UserTable
+
     yield SQLAlchemyUserDatabase(UserDB, session, UserTable)
 
 
@@ -51,7 +49,9 @@ class BaseModel(Base):
 
     id = sa.Column(GUID, primary_key=True)
     created_at = sa.Column(sa.DateTime(timezone=True), default=utcnow, nullable=False)
-    updated_at = sa.Column(sa.DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False)
+    updated_at = sa.Column(
+        sa.DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False
+    )
 
     def __str__(self):
         return f"<{type(self).__name__}({self.id=})>"

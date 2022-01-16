@@ -1,3 +1,6 @@
+DOCKER_NAME=authorizer
+
+
 migrate_db:
 	docker-compose run authorizer bash -c "alembic revision --autogenerate -m \"DB migration\""
 
@@ -18,13 +21,13 @@ stop:
 	docker-compose down
 
 test:
-	docker-compose run api bash -c "pytest app"
+	docker-compose run ${DOCKER_NAME} bash -c "pytest app"
 
 lint:
-	docker-compose run api bash -c "scripts/lint.sh"
+	docker-compose run ${DOCKER_NAME} bash -c "scripts/lint.sh"
 
 static:
-	docker-compose run api bash -c "scripts/lint.sh --check"
+	docker-compose run ${DOCKER_NAME} bash -c "scripts/lint.sh --check"
 
 # Requires "make init_pipeline apply_pipeline" to be run in infra/ first
 deploy:

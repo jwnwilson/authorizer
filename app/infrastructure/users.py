@@ -1,7 +1,6 @@
 import os
 from typing import Optional
 
-from httpx_oauth.clients.google import GoogleOAuth2
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers
 from fastapi_users.authentication import (
@@ -10,6 +9,7 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
+from httpx_oauth.clients.google import GoogleOAuth2
 
 from app.infrastructure.db.base import get_user_db
 from app.ports.users import User, UserCreate, UserDB, UserUpdate
@@ -45,8 +45,10 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
 
+
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 

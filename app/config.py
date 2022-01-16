@@ -1,4 +1,5 @@
 import os
+
 from pydantic import BaseSettings
 from sqlalchemy.engine.url import URL
 
