@@ -20,7 +20,7 @@ destroy:
 	cd tf && terraform destroy
 
 init_pipeline:
-	tf_pipeline && terraform init
+	cd tf_pipeline && terraform init
 
 apply_pipeline:
 	cd tf_pipeline && terraform apply

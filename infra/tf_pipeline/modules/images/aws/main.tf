@@ -1,4 +1,4 @@
-variable "api_repo" {}
+variable "auth_repo" {}
 
 variable "access_key" {}
 
@@ -12,8 +12,8 @@ provider "aws" {
   region     = var.region
 }
 
-resource "aws_ecr_repository" "api_repo" {
-  name                 = var.api_repo
+resource "aws_ecr_repository" "auth_repo" {
+  name                 = var.auth_repo
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {

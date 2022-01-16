@@ -13,7 +13,7 @@ provider "aws" {
 module "docker_images" {
   source = "./modules/images/aws"
 
-  api_repo        = var.api_repo
+  auth_repo        = var.auth_repo
   access_key      = var.aws_access_key
   secret_key      = var.aws_secret_key
   region          = var.aws_region

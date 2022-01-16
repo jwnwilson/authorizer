@@ -23,7 +23,7 @@ variable "project" {
 
 variable "ecr_api_url" {}
 
-variable "api_repo" {
+variable "auth_repo" {
   description = "Name of container image repository"
   default     = "authorizer"
 }

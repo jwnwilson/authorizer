@@ -1,0 +1,105 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.2
+
+jobs:
+  build-and-test:
+    machine:
+      image: ubuntu-2004:202111-01
+    steps:
+      - checkout
+      - run: chmod -R +x scripts/
+      - run: make build
+      - run: make static
+      - run: make test
+  build-and-test-push:
+    machine:
+      image: ubuntu-2004:202111-01
+    steps:
+      - checkout
+      - run: chmod -R +x scripts/
+      - run: make build
+      - run: make static
+      - run: make test
+      - run: make push
+  deploy-staging:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:latest
+    steps:
+      - checkout
+      - run:
+          name: terraform apply
+          command: |
+            apk update && apk add bash make
+            environment=staging bash scripts/plan.sh
+            environment=staging bash scripts/deploy.sh
+  deploy-prod-plan:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:latest
+    steps:
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: |
+            apk update && apk add bash make
+            environment=production bash scripts/plan.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  deploy-prod-apply:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:latest
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform
+          command: |
+            apk update && apk add bash make
+            environment=production bash scripts/deploy.sh
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+# Invoke jobs via workflows
+workflows:
+  main:
+    jobs:
+      - build-and-test:
+          name: build-and-test
+          filters:
+            branches:
+              ignore: main
+      - build-and-test-push:
+          name: build-and-test-push
+          filters:
+            branches:
+              only: main
+      - deploy-staging:
+          name: deploy-staging
+          requires:
+            - build-and-test-push
+          filters:
+            branches:
+              only: main
+      - deploy-prod:
+          type: approval
+          requires:
+            - deploy-staging
+      - deploy-prod-plan:
+          name: deploy-prod-plan
+          requires:
+            - deploy-prod
+          filters:
+            branches:
+              only: main
+      - deploy-prod-approve:
+          type: approval
+          requires:
+            - deploy-prod-plan
+      - deploy-prod-apply:
+          requires:
+            - deploy-prod-approve

@@ -716,6 +716,17 @@ babel = ["babel"]
 lingua = ["lingua"]
 
 [[package]]
+name = "mangum"
+version = "0.12.3"
+description = "AWS Lambda & API Gateway support for ASGI"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+typing-extensions = "*"
+
+[[package]]
 name = "markupsafe"
 version = "2.0.1"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -1078,7 +1089,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "7cb84479b2cbfd7cf76a7c43141376f439aea2e22211700dd2ee16bf0666fe41"
+content-hash = "b05df290e0ddfcf498d9917d331a2b8d521a72ae6090c4c36e9eb2d174ba4f2a"
 
 [metadata.files]
 aiosqlite = [
@@ -1363,6 +1374,10 @@ makefun = [
 mako = [
     {file = "Mako-1.1.6-py2.py3-none-any.whl", hash = "sha256:afaf8e515d075b22fad7d7b8b30e4a1c90624ff2f3733a06ec125f5a5f043a57"},
     {file = "Mako-1.1.6.tar.gz", hash = "sha256:4e9e345a41924a954251b95b4b28e14a301145b544901332e658907a7464b6b2"},
+]
+mangum = [
+    {file = "mangum-0.12.3-py3-none-any.whl", hash = "sha256:128a8c1aa2eef13fc94ac5344210df8bd71dfba584b658bec9473e784bd86301"},
+    {file = "mangum-0.12.3.tar.gz", hash = "sha256:a45cc1c57736e7044318e65216eea83a397cb709e39fe6810a46faf0e15d2664"},
 ]
 markupsafe = [
     {file = "MarkupSafe-2.0.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d8446c54dc28c01e5a2dbac5a25f071f6653e6e40f3a8818e8b45d790fe6ef53"},
