@@ -3,15 +3,13 @@ from fastapi_users.db import (
     SQLAlchemyBaseUserTable
 )
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
+
+from .base import BaseModel
 
 
-Base: DeclarativeMeta = declarative_base()
-
-
-class UserTable(Base, SQLAlchemyBaseUserTable):
+class UserTable(BaseModel, SQLAlchemyBaseUserTable):
     oauth_accounts = relationship("OAuthAccountTable")
 
 
-class OAuthAccountTable(Base, SQLAlchemyBaseOAuthAccountTable):
+class OAuthAccountTable(BaseModel, SQLAlchemyBaseOAuthAccountTable):
     pass
