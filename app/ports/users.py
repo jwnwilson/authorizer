@@ -1,7 +1,7 @@
 from fastapi_users import models
 
 
-class User(models.BaseUser, models.BaseOAuthAccountMixin):
+class User(models.BaseUser):
     pass
 
 
@@ -15,5 +15,3 @@ class UserUpdate(models.BaseUserUpdate):
 
 class UserDB(User, models.BaseUserDB):
     pass
-
-

@@ -1,24 +1,30 @@
-import logging
-from typing import TypeVar
+from typing import AsyncGenerator
 
-from sqlalchemy import MetaData
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends
+from fastapi_users.db import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
+from .models import Base, UserTable
+from app.ports.users import UserDB
 from config import settings
 
-logger = logging.getLogger(__name__)
-TBase = TypeVar("TBase", bound="BaseModel")
+DATABASE_URL = settings.DB_DSN
 
 
-engine = create_async_engine(
-    settings.DB_DSN,
-    echo=settings.DB_ECHO,
-    pool_size=settings.DB_POOL_SIZE,
-    max_overflow=settings.DB_MAX_OVERFLOW,
-    future=True,
-)
-async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession, future=True)
-metadata = MetaData()
-Base = declarative_base(metadata=metadata)
+engine = create_async_engine(DATABASE_URL)
+async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+
+
+async def create_db_and_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_maker() as session:
+        yield session
+
+
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    yield SQLAlchemyUserDatabase(UserDB, session, UserTable)

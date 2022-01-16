@@ -1,6 +1,5 @@
 import os
 from typing import Optional
-from typing import AsyncGenerator
 
 from httpx_oauth.clients.google import GoogleOAuth2
 from fastapi import Depends, Request
@@ -11,32 +10,17 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from ports.user import User, UserCreate, UserUpdate, UserDB
-from .base import engine, async_session, Base
-from .models.users import UserTable
+from app.infrastructure.db.base import get_user_db
+from app.ports.users import User, UserCreate, UserDB, UserUpdate
 
-SECRET = os.environ["SECRET"]
+SECRET = "SECRET"
+
 
 google_oauth_client = GoogleOAuth2(
     os.environ["GOOGLE_OAUTH_CLIENT_ID"],
     os.environ["GOOGLE_OAUTH_CLIENT_SECRET"],
 )
-
-
-async def create_db_and_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session() as session:
-        yield session
-
-
-async def get_user_db(session: AsyncSession = Depends(get_async_session)):
-    yield SQLAlchemyUserDatabase(UserDB, session, UserTable)
 
 
 class UserManager(BaseUserManager[UserCreate, UserDB]):
@@ -61,10 +45,8 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
 
-
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
-
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 

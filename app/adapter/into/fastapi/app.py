@@ -1,11 +1,7 @@
 from fastapi import Depends, FastAPI
-from infrastructure.db.auth import (
-    auth_backend,
-    current_active_user,
-    fastapi_users,
-    google_oauth_client,
-)
-from ports.user import UserDB
+
+from app.ports.users import UserDB
+from app.infrastructure.users import auth_backend, current_active_user, fastapi_users, google_oauth_client
 
 app = FastAPI()
 
@@ -29,7 +25,6 @@ app.include_router(
     prefix="/auth/google",
     tags=["auth"],
 )
-
 
 @app.get("/authenticated-route")
 async def authenticated_route(user: UserDB = Depends(current_active_user)):
