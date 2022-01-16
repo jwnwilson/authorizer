@@ -14,7 +14,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from app.infrastructure.db.base import get_user_db
 from app.ports.users import User, UserCreate, UserDB, UserUpdate
 
-SECRET = "SECRET"
+SECRET = os.environ["SECRET"]
 
 
 google_oauth_client = GoogleOAuth2(
