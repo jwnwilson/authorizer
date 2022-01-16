@@ -6,5 +6,4 @@ from fastapi.testclient import TestClient
 def client():
     from adapter.into.fastapi.app import app
 
-
     return TestClient(app)
