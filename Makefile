@@ -1,3 +1,6 @@
+migrate_db:
+	docker-compose run authorizer bash -c "alembic revision --autogenerate -m \"DB migration\" && alembic upgrade head"
+
 build:
 	docker-compose build --build-arg INSTALL_DEV=true
 

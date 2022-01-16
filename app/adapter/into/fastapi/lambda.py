@@ -6,7 +6,7 @@ from mangum import Mangum
 logging.basicConfig(level=logging.INFO)
 logging.getLogger().setLevel(logging.INFO)
 
-from .main import app
+from .app import app
 
 # To plug into lambda
 handler = Mangum(app)
