@@ -9,4 +9,4 @@ logging.getLogger().setLevel(logging.INFO)
 from .app import app
 
 # To plug into lambda
-handler = Mangum(app)
+lambda_handler = Mangum(app)
