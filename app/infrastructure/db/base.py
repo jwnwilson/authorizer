@@ -9,8 +9,8 @@ from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from app.config import settings
-from app.utils import utcnow
 from app.ports.users import UserDB
+from app.utils import utcnow
 
 engine = create_async_engine(
     settings.DB_DSN,
