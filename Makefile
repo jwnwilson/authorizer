@@ -1,14 +1,14 @@
 DOCKER_NAME=authorizer
 DOCKER_COMMAND=docker-compose -f docker-compose.yml
 
+upgrade_db_local:
+	poetry run "alembic upgrade head"
+
 migrate_db:
 	${DOCKER_COMMAND} run authorizer bash -c "alembic revision --autogenerate -m \"DB migration\""
 
 upgrade_db:
 	${DOCKER_COMMAND} run authorizer bash -c "alembic upgrade head"
-
-upgrade_db_local:
-	poetry run "alembic upgrade head"
 
 build:
 	${DOCKER_COMMAND} build --build-arg INSTALL_DEV=true

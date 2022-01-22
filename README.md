@@ -72,6 +72,23 @@ To create a different environment run:
 `AWS_DEFAULT_REGION=eu-west-1 environment=test docker_tag=<docker_tag> make plan`
 `AWS_DEFAULT_REGION=eu-west-1 environment=test docker_tag=<docker_tag> make apply`
 
+# DB Management
+
+To get access to our DB we need a bastion machine created, to create first update the variables in infra/tf_bastion/variables with the correct VPC, update DB_URL in infra/tf_bastion/scripts/bastion_db_tunnel.sh and then run.
+
+```cd infra
+make bastion_init
+make bastion_appy
+```
+
+Once the machine build access with:
+
+`cd infra && make bastion_ssh`
+
+To setup a local port to access the RDS DB with run:
+
+`cd infra && make bastion_db_tunnel` 
+
 # Domain Driven Development
 
 The structure of this project is based on a DDD programming technique "Hexagonal architecture" as described here:
