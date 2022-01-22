@@ -1,15 +1,15 @@
 from typing import AsyncGenerator
 
 import sqlalchemy as sa
-from config import settings
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users_db_sqlalchemy.guid import GUID
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
-from utils import utcnow
 
+from app.config import settings
+from app.utils import utcnow
 from app.ports.users import UserDB
 
 engine = create_async_engine(

@@ -1,35 +1,37 @@
 DOCKER_NAME=authorizer
+DOCKER_COMMAND=docker-compose -f docker-compose.yml -f docker-compose.db.yml
+DOCKER_LOCAL_DB_COMMAND=docker-compose -f docker-compose.yml -f docker-compose.local-db.yml
 
 migrate_db:
-	docker-compose run authorizer bash -c "alembic revision --autogenerate -m \"DB migration\""
+	${DOCKER_COMMAND} run authorizer bash -c "alembic revision --autogenerate -m \"DB migration\""
 
 upgrade_db:
-	docker-compose run authorizer bash -c "alembic upgrade head"
+	${DOCKER_COMMAND} run authorizer bash -c "alembic upgrade head"
 
 upgrade_db_local:
-	docker-compose -f docker-compose.yml -f docker-compose.local-db.yml run authorizer bash -c "alembic upgrade head"
+	${DOCKER_LOCAL_DB_COMMAND} run authorizer bash -c "alembic upgrade head"
 
 build:
-	docker-compose build --build-arg INSTALL_DEV=true
+	${DOCKER_COMMAND} build --build-arg INSTALL_DEV=true
 
 # push last build image to ECR
 push:
 	bash ./scripts/push.sh
 
 run:
-	docker-compose up
+	${DOCKER_COMMAND} up
 
 stop:
-	docker-compose down
+	${DOCKER_COMMAND} down
 
 test:
-	docker-compose run ${DOCKER_NAME} bash -c "pytest app"
+	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "pytest app"
 
 lint:
-	docker-compose run ${DOCKER_NAME} bash -c "scripts/lint.sh"
+	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "scripts/lint.sh"
 
 static:
-	docker-compose run ${DOCKER_NAME} bash -c "scripts/lint.sh --check"
+	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "scripts/lint.sh --check"
 
 # Requires "make init_pipeline apply_pipeline" to be run in infra/ first
 deploy:

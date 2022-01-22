@@ -92,6 +92,16 @@ module "security_group" {
       cidr_blocks = module.vpc.vpc_cidr_block
     },
   ]
+
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "PostgreSQL access from within VPC"
+      cidr_blocks = module.vpc.vpc_cidr_block
+    },
+  ]
 }
 
 module "db" {
