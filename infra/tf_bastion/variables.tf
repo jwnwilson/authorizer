@@ -1,7 +1,3 @@
-variable "vpc" {
-  default = "vpc-055676c11fe77915e"
-}
-
 variable "environment" {
   default = "develop"
 }
@@ -22,4 +18,8 @@ variable "aws_secret_key" {
 
 variable "project" {
   default = "authorizer"
+}
+
+variable "vpc_id" {
+  default = "vpc-055676c11fe77915e"
 }

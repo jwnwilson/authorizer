@@ -81,14 +81,4 @@ The goal is to avoid coupling logic so that it can be re-used across projects.
 
 # To Do
 
-- finish pdf generator
-  - user auth
-  - worker error handling
-  - Multipage / combine pdf support
-  - test suite - localstack
-- create email service
-- create production time aws account
-- setup:
-  - pdf service
-  - email generator
-  - aktion API in aws
+- Automate DB migrations with alembic on lamdba in circle

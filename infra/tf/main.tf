@@ -58,7 +58,20 @@ module "vpc" {
 
   azs  = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 
+  public_subnets  = ["10.10.1.0/24", "10.10.2.0/24", "10.10.3.0/24"]
   private_subnets = ["10.10.101.0/24", "10.10.102.0/24", "10.10.103.0/24"]
+
+  private_subnet_tags = {
+    Tier = "Private"
+  }
+  public_subnet_tags = {
+    Tier = "Public"
+  }
+
+  tags = {
+    project = var.project
+    Environment = var.environment
+  }
 }
 
 module "security_group" {
@@ -89,7 +102,7 @@ module "db" {
 
   # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
   engine               = "postgres"
-  engine_version       = "11.10"
+  engine_version       = "11.12"
   family               = "postgres11" # DB parameter group
   major_engine_version = "11"         # DB option group
   instance_class       = "db.t2.micro"

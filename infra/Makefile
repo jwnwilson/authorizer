@@ -19,11 +19,32 @@ apply:
 destroy:
 	cd tf && terraform destroy
 
-init_pipeline:
+pipeline_init:
 	cd tf_pipeline && terraform init
 
-apply_pipeline:
+pipeline_appy:
 	cd tf_pipeline && terraform apply
 
-destroy_pipeline:
+pipeline_destroy:
 	cd tf_pipeline && terraform destroy
+
+bastion_init:
+	cd tf_bastion && terraform init
+
+bastion_plan:
+	cd tf_bastion && terraform plan
+
+bastion_apply:
+	cd tf_bastion && terraform apply
+
+bastion_destroy:
+	cd tf_bastion && terraform destroy
+
+bastion_output:
+	cd tf_bastion && terraform refresh && terraform output -raw bastion_id
+
+bastion_ssh:
+	cd tf_bastion && ./scripts/bastion_ssh.sh
+
+bastion_db_tunnel:
+	cd tf_bastion && ./scripts/bastion_db_tunnel.sh

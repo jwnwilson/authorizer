@@ -1,0 +1,6 @@
+version: '3'
+services:
+  authorizer:
+    network_mode: host
+    environment:
+      - DB_URL=postgresql+asyncpg://postgres:password@localhost:5432/authorizer

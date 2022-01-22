@@ -1,11 +1,13 @@
 DOCKER_NAME=authorizer
 
-
 migrate_db:
 	docker-compose run authorizer bash -c "alembic revision --autogenerate -m \"DB migration\""
 
 upgrade_db:
 	docker-compose run authorizer bash -c "alembic upgrade head"
+
+upgrade_db_local:
+	docker-compose -f docker-compose.yml -f docker-compose.local-db.yml run authorizer bash -c "alembic upgrade head"
 
 build:
 	docker-compose build --build-arg INSTALL_DEV=true
