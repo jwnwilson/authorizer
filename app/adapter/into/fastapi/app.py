@@ -8,7 +8,10 @@ from app.infrastructure.users import (
 )
 from app.ports.users import UserDB
 
-app = FastAPI()
+app = FastAPI(
+    title="Auth Service",
+    description="Auth service to manage users in microservices"
+)
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
