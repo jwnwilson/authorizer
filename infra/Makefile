@@ -6,6 +6,8 @@ TF_VAR_environment=${environment}
 TF_VAR_aws_access_key=${AWS_ACCESS_KEY_ID}
 TF_VAR_aws_secret_key=${AWS_SECRET_ACCESS_KEY}
 TF_VAR_aws_region=${AWS_DEFAULT_REGION}
+TF_VAR_vpc_id=vpc-055676c11fe77915e
+DB_URL=authorizer-db-staging.clfqqiusnlbr.eu-west-1.rds.amazonaws.com
 
 init:
 	cd tf && terraform init -input=false
@@ -15,6 +17,9 @@ plan:
 
 apply:
 	cd tf && terraform apply -auto-approve tfapply
+
+outputs:
+	cd tf && terraform output
 
 destroy:
 	cd tf && terraform destroy
@@ -35,6 +40,7 @@ bastion_plan:
 	cd tf_bastion && terraform plan
 
 bastion_apply:
+	cd tf_bastion && ./scripts/generate_bastion_init.sh
 	cd tf_bastion && terraform apply
 
 bastion_destroy:

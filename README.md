@@ -74,9 +74,10 @@ To create a different environment run:
 
 # DB Management
 
-To get access to our DB we need a bastion machine created, to create first update the variables in infra/tf_bastion/variables with the correct VPC, update DB_URL in infra/tf_bastion/scripts/bastion_db_tunnel.sh and then run.
+To get access to our DB we need a bastion machine created, to create first update the variables in `infra/Makefile` with the correct VPC and DB_URL for the authorizer service then run.
 
-```cd infra
+```
+cd infra
 make bastion_init
 make bastion_appy
 ```
