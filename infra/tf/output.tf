@@ -3,5 +3,5 @@ output "vpc_id" {
 }
 
 output "db_url" {
-  value = module.db_instance_address
+  value = module.db.db_instance_address
 }
