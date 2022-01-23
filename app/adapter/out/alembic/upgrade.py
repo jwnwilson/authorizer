@@ -1,12 +1,13 @@
 import logging
 import os
 
-from alembic.config import Config
 from alembic import command
+from alembic.config import Config
 
 logger = logging.getLogger(__name__)
 
-def update_db(): 
+
+def update_db():
     dsn = os.environ.get("DB_URL")
     logger.info(f"Running DB migrations on {dsn}")
     alembic_cfg = Config()

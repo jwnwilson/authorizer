@@ -9,8 +9,7 @@ from app.infrastructure.users import (
 from app.ports.users import UserDB
 
 app = FastAPI(
-    title="Auth Service",
-    description="Auth service to manage users in microservices"
+    title="Auth Service", description="Auth service to manage users in microservices"
 )
 
 app.include_router(
