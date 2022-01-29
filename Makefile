@@ -1,5 +1,6 @@
 DOCKER_NAME=authorizer
 DOCKER_COMMAND=docker-compose -f docker-compose.yml
+LOCAL_TASK_URL=http://localhost:9000/2015-03-31/functions/function/invocations
 
 upgrade_db_local:
 	poetry run "alembic upgrade head"
@@ -32,6 +33,8 @@ lint:
 static:
 	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "scripts/lint.sh --check"
 
+task:
+	curl -XPOST ${LOCAL_TASK_URL} -H "Content-Type: application/json" -d @./app/tests/data/mock_event.json
 # Requires "make init_pipeline apply_pipeline" to be run in infra/ first
 deploy:
 	bash ./scripts/deploy.sh

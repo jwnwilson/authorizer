@@ -21,6 +21,40 @@ This will build a lambda compatible docker container running fast api that can b
 
 `http://localhost:8888`
 
+It is possible to send events to the lambda worker running the RIE lambda emulator API by running the following command:
+
+`curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"Records": [{"body": \"{\"pdf_id\": \"test\", \"params\": {}}"}]}'`
+
+Sample json payload:
+
+```
+{
+  "Records": [
+    {
+      "messageId": "19dd0b57-b21e-4ac1-bd88-01bbb068cb78",
+      "receiptHandle": "MessageReceiptHandle",
+      "body": {
+          "pdf_id": "test",
+          "params": {}
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1523232000000",
+        "SenderId": "123456789012",
+        "ApproximateFirstReceiveTimestamp": "1523232000001"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "{{{md5_of_body}}}",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-1:123456789012:MyQueue",
+      "awsRegion": "us-east-1"
+    }
+  ]
+}
+```
+
+
+
 
 # Deploying to AWS
 
