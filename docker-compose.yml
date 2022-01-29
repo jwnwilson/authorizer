@@ -21,6 +21,26 @@ services:
     command: "uvicorn app.adapter.into.fastapi.app:app --host 0.0.0.0 --port 80 --reload --debug"
     depends_on:
       - db
+
+  worker:
+    image: authorizer
+    depends_on:
+      - authorizer
+    tty: true
+    env_file:
+      - .env
+    volumes:
+      - ./app:/var/task/app
+      - ./scripts:/var/task/scripts
+      - ./mypy.ini:/var/task/mypy.ini
+      # For local auth with aws, assuming credential file exists
+      - $HOME/.aws/credentials:/root/.aws/credentials:ro
+    expose:
+      - "9000"
+    ports:
+      - 0.0.0.0:9000:8080
+    command: "app.adapter.into.lambda.authorizer.lambda_handler"
+
   db:
     image: library/postgres:13
     restart: always

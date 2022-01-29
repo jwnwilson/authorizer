@@ -74,7 +74,10 @@ To create a different environment run:
 
 # DB Management
 
-To get access to our DB we need a bastion machine created, to create first update the variables in `infra/Makefile` with the correct VPC and DB_URL for the authorizer service then run.
+To get access to our DB we need a bastion machine created, firstly get the authorizer VPC and DB URL from the AWS console or run:
+`cd infra && make outputs`
+
+Update the variables in `infra/Makefile` with the correct VPC and DB_URL for the authorizer service then run. 
 
 ```
 cd infra
