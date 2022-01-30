@@ -78,11 +78,11 @@ module "db_migrator" {
 
   function_name           = "authorizer_db_migrate_${var.environment}"
   description             = "Authorizer DB migration command"
-  image_config_command    = ["app.adapter.into.lambda.db_command.lambda_handler"]
 
   create_package          = false
 
   image_uri               = "${var.ecr_api_url}:${var.docker_tag}"
+  image_config_command    = ["app.adapter.into.lambda.db_command.lambda_handler"]
   package_type            = "Image"
   attach_network_policy   = true
   timeout                 = 900
