@@ -14,6 +14,9 @@ upgrade_db:
 build:
 	${DOCKER_COMMAND} build --build-arg INSTALL_DEV=true
 
+build_prod:
+	${DOCKER_COMMAND} build
+
 # push last build image to ECR
 push:
 	bash ./scripts/push.sh
@@ -25,7 +28,7 @@ stop:
 	${DOCKER_COMMAND} down
 
 test:
-	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "pytest app"
+	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "pytest -s app"
 
 lint:
 	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "scripts/lint.sh"

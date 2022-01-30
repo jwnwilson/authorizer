@@ -1,6 +1,7 @@
 import re
 
-from app.infrastructure.users import get_user_manager, get_jwt_strategy
+
+from use_case.auth_token import get_user_from_token
 
 
 class HttpVerb:
@@ -189,19 +190,14 @@ import asyncio
 loop = asyncio.get_event_loop()
 
 
-async def get_user(token):
-    user_manager = await get_user_manager()
-    return await get_jwt_strategy().read_token(token, user_manager)
-
-
 def lambda_handler(event, context):
     """Do not print the auth token unless absolutely necessary"""
     # print("Client token: " + event['authorizationToken'])
     print("Method ARN: " + event["methodArn"])
 
     token = event['authorizationToken']
-    user = loop.run_until_complete(get_user(token))
-    principalId = user.id
+    principalId = ""
+    user = loop.run_until_complete(get_user_from_token(token))
 
     tmp = event["methodArn"].split(":")
     apiGatewayArnTmp = tmp[5].split("/")
@@ -211,15 +207,22 @@ def lambda_handler(event, context):
     policy.restApiId = apiGatewayArnTmp[0]
     policy.region = tmp[3]
     policy.stage = apiGatewayArnTmp[1]
-    policy.denyAllMethods()
+
+
+    if user:
+        principalId = user.id
+        policy.allowAllMethods()
+    else:
+        policy.denyAllMethods()
 
     # Finally, build the policy
     authResponse = policy.build()
 
-    context = {
-        "user_id": principalId
-    }
+    if user:
+        context = {
+            "user_id": principalId
+        }
 
-    authResponse["context"] = context
+        authResponse["context"] = context
 
     return authResponse

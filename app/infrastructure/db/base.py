@@ -12,15 +12,23 @@ from app.config import settings
 from app.ports.users import UserDB
 from app.utils import utcnow
 
-engine = create_async_engine(
-    settings.DB_DSN,
-    echo=settings.DB_ECHO,
-    pool_size=settings.DB_POOL_SIZE,
-    max_overflow=settings.DB_MAX_OVERFLOW,
-)
-async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 Base: DeclarativeMeta = declarative_base()
 
+
+def get_db_engine():
+    engine = create_async_engine(
+        settings.DB_DSN,
+        echo=settings.DB_ECHO,
+        # pool_size=settings.DB_POOL_SIZE,
+        # max_overflow=settings.DB_MAX_OVERFLOW,
+    )
+    return engine
+
+
+def get_async_session_maker():
+    engine = get_db_engine()
+    return sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    
 
 async def create_db_and_tables():
     async with engine.begin() as conn:
@@ -28,6 +36,7 @@ async def create_db_and_tables():
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async_session_maker = get_async_session_maker()
     async with async_session_maker() as session:
         yield session
 

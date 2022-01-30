@@ -4,6 +4,7 @@ infra/tf/tfapply
 infra/*/.terraform
 infra/*/.terraform.lock.hcl
 infra/tf_bastion/scripts/bastion_init.sh
+db.sqlite
 
 # python
 # Byte-compiled / optimized / DLL files
