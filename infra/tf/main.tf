@@ -55,7 +55,7 @@ module "authorizer_api_gw" {
   create_package          = false
 
   image_uri               = "${var.ecr_api_url}:${var.docker_tag}"
-  image_config_command    = "app.adapter.into.lambda.authorizer.lambda_handler"
+  image_config_command    = ["app.adapter.into.lambda.authorizer.lambda_handler"]
   package_type            = "Image"
   attach_network_policy   = true
   timeout                 = 30
