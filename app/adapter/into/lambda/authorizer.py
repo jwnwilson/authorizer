@@ -209,7 +209,7 @@ def lambda_handler(event, context):
     policy.stage = apiGatewayArnTmp[1]
 
     if user:
-        principalId = user.id
+        principalId = str(user.id)
         policy.allowAllMethods()
     else:
         policy.denyAllMethods()
