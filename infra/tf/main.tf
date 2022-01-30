@@ -49,7 +49,7 @@ module "authorizer" {
 module "authorizer_api_gw" {
   source                  = "terraform-aws-modules/lambda/aws"
 
-  function_name           = "authorizer_${var.environment}"
+  function_name           = "authorizer_api_gw_${var.environment}"
   description             = "Authorizer for API GW"
 
   create_package          = false
