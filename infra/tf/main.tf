@@ -46,6 +46,33 @@ module "authorizer" {
   vpc_security_group_ids = [module.security_group.security_group_id]
 }
 
+module "authorizer_api_gw" {
+  source                  = "terraform-aws-modules/lambda/aws"
+
+  function_name           = "authorizer_${var.environment}"
+  description             = "Authorizer for API GW"
+
+  create_package          = false
+
+  image_uri               = "${var.ecr_api_url}:${var.docker_tag}"
+  image_config_command    = "app.adapter.into.lambda.authorizer.lambda_handler"
+  package_type            = "Image"
+  attach_network_policy   = true
+  timeout                 = 30
+
+  environment_variables = {
+    ENVIRONMENT                 = var.environment
+    SECRET                      = "d150fcaa-a124-42ae-9442-6b7388607a9e"
+    # Move to param store     
+    DB_URL                      = "postgresql+asyncpg://postgres:password@${module.db.db_instance_endpoint}/authorizer"
+    GOOGLE_OAUTH_CLIENT_ID      = ""
+    GOOGLE_OAUTH_CLIENT_SECRET  = ""
+  }
+
+  vpc_subnet_ids         = module.vpc.private_subnets
+  vpc_security_group_ids = [module.security_group.security_group_id]
+}
+
 module "db_migrator" {
   source                  = "terraform-aws-modules/lambda/aws"
 
