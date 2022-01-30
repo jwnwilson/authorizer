@@ -28,7 +28,7 @@ def get_db_engine():
 def get_async_session_maker():
     engine = get_db_engine()
     return sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-    
+
 
 async def create_db_and_tables():
     async with engine.begin() as conn:

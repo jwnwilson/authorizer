@@ -3,7 +3,6 @@ import os
 
 from alembic import command
 from alembic.config import Config
-
 from config import settings
 
 logger = logging.getLogger(__name__)

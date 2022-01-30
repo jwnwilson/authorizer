@@ -1,10 +1,11 @@
-import pytest
 import os
+
+import pytest
 
 os.environ["DB_URL"] = "sqlite+aiosqlite:///db.sqlite"
 
-from fastapi.testclient import TestClient
 from adapter.out.alembic.upgrade import update_db
+from fastapi.testclient import TestClient
 
 
 @pytest.fixture
@@ -29,14 +30,17 @@ def test_username_password():
 
 @pytest.fixture
 def create_test_user(client, test_username_password):
-    response = client.post("/auth/register", json={
-        "email": test_username_password["username"],
-        "password": test_username_password["password"]
-    })
+    response = client.post(
+        "/auth/register",
+        json={
+            "email": test_username_password["username"],
+            "password": test_username_password["password"],
+        },
+    )
     return response.json()
 
 
 @pytest.fixture
-def login_test_user(client, create_test_user, test_username_password): 
+def login_test_user(client, create_test_user, test_username_password):
     response = client.post("/auth/jwt/login", data=test_username_password)
     return response.json()

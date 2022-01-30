@@ -1,5 +1,5 @@
 import re
-
+from typing import Dict, List
 
 from use_case.auth_token import get_user_from_token
 
@@ -30,8 +30,8 @@ class AuthPolicy(object):
     conditions statement.
     the build method processes these lists and generates the approriate
     statements for the final policy"""
-    allowMethods = []
-    denyMethods = []
+    allowMethods: List[Dict] = []
+    denyMethods: List[Dict] = []
 
     restApiId = "<<restApiId>>"
     """ Replace the placeholder value with a default API Gateway API id to be used in the policy. 
@@ -195,7 +195,7 @@ def lambda_handler(event, context):
     # print("Client token: " + event['authorizationToken'])
     print("Method ARN: " + event["methodArn"])
 
-    token = event['authorizationToken']
+    token = event["authorizationToken"]
     principalId = ""
     user = loop.run_until_complete(get_user_from_token(token))
 
@@ -208,7 +208,6 @@ def lambda_handler(event, context):
     policy.region = tmp[3]
     policy.stage = apiGatewayArnTmp[1]
 
-
     if user:
         principalId = user.id
         policy.allowAllMethods()
@@ -219,9 +218,7 @@ def lambda_handler(event, context):
     authResponse = policy.build()
 
     if user:
-        context = {
-            "user_id": principalId
-        }
+        context = {"user_id": principalId}
 
         authResponse["context"] = context
 
