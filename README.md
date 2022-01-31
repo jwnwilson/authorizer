@@ -54,7 +54,11 @@ Sample json payload:
 ```
 
 
+# Adding Auth to other lambda microservices
 
+In order to add this authorizer to another service, we need to add it to it's API Gatway resource. This will require re-creating the resource and adding this service as an authorizer. More details are available here.
+
+https://docs.aws.amazon.com/apigateway/latest/developerguide/configure-api-gateway-lambda-authorization-with-console.html
 
 # Deploying to AWS
 
