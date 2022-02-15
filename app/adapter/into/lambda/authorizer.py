@@ -191,14 +191,13 @@ loop = asyncio.get_event_loop()
 
 
 def lambda_handler(event, context):
-    """Do not print the auth token unless absolutely necessary"""
-    # print("Client token: " + event['authorizationToken'])
     print("Method ARN: " + event["methodArn"])
-
+    
     token = event["authorizationToken"]
     principalId = ""
     user = loop.run_until_complete(get_user_from_token(token))
 
+    print("token: ", token)
     print("user: ", user)
 
     tmp = event["methodArn"].split(":")
