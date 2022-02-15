@@ -31,10 +31,10 @@ test:
 	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "pytest -s app"
 
 lint:
-	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "scripts/lint.sh"
+	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "./scripts/lint.sh"
 
 static:
-	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "scripts/lint.sh --check"
+	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "./scripts/lint.sh --check"
 
 task:
 	curl -XPOST ${LOCAL_TASK_URL} -H "Content-Type: application/json" -d @./app/tests/data/mock_event.json

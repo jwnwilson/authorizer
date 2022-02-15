@@ -1,9 +1,7 @@
-#!/usr/bin/env bash
+#! /bin/bash
 
 set -e
 set -x
-
-#!/bin/bash
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -15,7 +13,7 @@ done
 APP_FOLDER=app
 
 if [[ -z "${check}" ]]; then
-    black ${APP_FOLDER} 
+    black ${APP_FOLDER}
     isort ${APP_FOLDER} --profile black
 else
     mypy ${APP_FOLDER}
