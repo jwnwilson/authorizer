@@ -67,6 +67,8 @@ resource "aws_api_gateway_stage" "authorizer" {
   deployment_id = aws_api_gateway_deployment.apideploy.id
   rest_api_id   = aws_api_gateway_rest_api.apiLambda.id
   stage_name    = var.environment
+  xray_tracing_enabled = true
+  
 }
 
 resource "aws_api_gateway_domain_name" "authorizer" {

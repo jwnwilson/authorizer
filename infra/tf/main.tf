@@ -33,6 +33,9 @@ module "authorizer" {
   attach_network_policy   = true
   timeout                 = 30
 
+  attach_tracing_policy   = true
+  tracing_mode            = "Active"
+
   environment_variables = {
     ENVIRONMENT                 = var.environment
     SECRET                      = "d150fcaa-a124-42ae-9442-6b7388607a9e"
