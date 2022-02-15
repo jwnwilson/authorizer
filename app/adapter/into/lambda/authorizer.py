@@ -199,6 +199,8 @@ def lambda_handler(event, context):
     principalId = ""
     user = loop.run_until_complete(get_user_from_token(token))
 
+    print("user: ", user)
+
     tmp = event["methodArn"].split(":")
     apiGatewayArnTmp = tmp[5].split("/")
     awsAccountId = tmp[4]
