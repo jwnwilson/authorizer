@@ -11,4 +11,6 @@ async def get_user_from_token(token):
     async with async_session_maker() as session:
         user_db = SQLAlchemyUserDatabase(UserDB, session, UserTable)
         user_manager = UserManager(user_db)
-        return await get_jwt_strategy().read_token(token, user_manager)
+        user = await get_jwt_strategy().read_token(token, user_manager)
+        print("user", user)
+        return user
