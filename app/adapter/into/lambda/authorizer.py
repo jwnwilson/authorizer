@@ -193,7 +193,7 @@ loop = asyncio.get_event_loop()
 def lambda_handler(event, context):
     print("Method ARN: " + event["methodArn"])
 
-    token = event["authorizationToken"]
+    token = event["authorizationToken"].replace("Bearer ", "")
     principalId = ""
     user = loop.run_until_complete(get_user_from_token(token))
 
