@@ -72,19 +72,19 @@ workflows:
           name: build-and-test
           filters:
             branches:
-              ignore: jwt
+              ignore: main
       - build-and-test-push:
           name: build-and-test-push
           filters:
             branches:
-              only: jwt
+              only: main
       - deploy-staging:
           name: deploy-staging
           requires:
             - build-and-test-push
           filters:
             branches:
-              only: jwt
+              only: main
       - deploy-prod:
           type: approval
           requires:
@@ -95,7 +95,7 @@ workflows:
             - deploy-prod
           filters:
             branches:
-              only: jwt
+              only: main
       - deploy-prod-approve:
           type: approval
           requires:
