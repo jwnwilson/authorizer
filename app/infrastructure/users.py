@@ -65,7 +65,7 @@ class JWTNoDBStrategy(JWTStrategy):
             return None
 
         try:
-            return User(
+            return UserDB(
                 **data
             )
         except ValueError:
