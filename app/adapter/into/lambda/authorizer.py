@@ -197,8 +197,10 @@ def lambda_handler(event, context):
     principalId = ""
     user = loop.run_until_complete(get_user_from_token(token))
 
-    print("token: ", str(token))
-    print("user: ", user)
+    if user:
+        print(f"User found: {user.id}")
+    else:
+        print(f"User not found")
 
     tmp = event["methodArn"].split(":")
     apiGatewayArnTmp = tmp[5].split("/")
