@@ -70,11 +70,12 @@ class JWTNoDBStrategy(JWTStrategy):
 
     async def write_token(self, user: models.UD) -> str:
         data = user.dict()
+        data["id"] = str(data["id"])
         data["aud"] = self.token_audience
         return generate_jwt(data, self.secret, self.lifetime_seconds)
 
 
-def get_jwt_strategy() -> JWTStrategy:
+def get_jwt_strategy() -> JWTNoDBStrategy:
     return JWTNoDBStrategy(secret=SECRET, lifetime_seconds=3600)
 
 
