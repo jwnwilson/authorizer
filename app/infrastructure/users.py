@@ -1,7 +1,10 @@
 import os
+import jwt
 from typing import Optional
 
 from fastapi import Depends, Request
+from fastapi_users import models
+from fastapi_users.jwt import decode_jwt, generate_jwt
 from fastapi_users import BaseUserManager, FastAPIUsers
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -46,8 +49,36 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
     yield UserManager(user_db)
 
 
+class JWTNoDBStrategy(JWTStrategy):
+    async def read_token(
+        self, token: Optional[str], user_manager: BaseUserManager[models.UC, models.UD]
+    ) -> Optional[models.UD]:
+        if token is None:
+            return None
+
+        try:
+            data = decode_jwt(token, self.secret, self.token_audience)
+            user_id = data.get("id")
+            if user_id is None:
+                return None
+        except jwt.PyJWTError:
+            return None
+
+        try:
+            return User(
+                **data
+            )
+        except ValueError:
+            return None
+
+    async def write_token(self, user: models.UD) -> str:
+        data = user.dict()
+        data["aud"] = self.token_audience
+        return generate_jwt(data, self.secret, self.lifetime_seconds)
+
+
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+    return JWTNoDBStrategy(secret=SECRET, lifetime_seconds=3600)
 
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
