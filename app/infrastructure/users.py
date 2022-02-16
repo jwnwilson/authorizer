@@ -49,9 +49,9 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
 
 
 class JWTNoDBStrategy(JWTStrategy):
-    async def read_token(
-        self, token: Optional[str], user_manager: BaseUserManager[models.UC, models.UD]
-    ) -> Optional[models.UD]:
+    def read_token_no_db(
+        self, token: str
+    ) -> UserDB:
         if token is None:
             return None
 
@@ -64,7 +64,7 @@ class JWTNoDBStrategy(JWTStrategy):
             return None
 
         try:
-            return User(**data)  # type: ignore
+            return UserDB(**data)
         except ValueError:
             return None
 
