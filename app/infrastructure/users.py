@@ -1,17 +1,16 @@
 import os
-import jwt
 from typing import Optional
 
+import jwt
 from fastapi import Depends, Request
-from fastapi_users import models
-from fastapi_users.jwt import decode_jwt, generate_jwt
-from fastapi_users import BaseUserManager, FastAPIUsers
+from fastapi_users import BaseUserManager, FastAPIUsers, models
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
+from fastapi_users.jwt import decode_jwt, generate_jwt
 from httpx_oauth.clients.google import GoogleOAuth2
 
 from app.infrastructure.db.base import get_user_db
@@ -65,9 +64,7 @@ class JWTNoDBStrategy(JWTStrategy):
             return None
 
         try:
-            return UserDB(
-                **data
-            )
+            return User(**data)  # type: ignore
         except ValueError:
             return None
 
