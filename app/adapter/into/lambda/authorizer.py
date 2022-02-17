@@ -186,16 +186,16 @@ class AuthPolicy(object):
 
 
 def lambda_handler(event, context):
-    print("Method ARN: " + event["methodArn"])
+    # print("Method ARN: " + event["methodArn"])
 
     token = event["authorizationToken"].replace("Bearer ", "")
     principalId = ""
     user = get_user_from_token(token)
 
-    if user:
-        print(f"User found: {user.id}")
-    else:
-        print(f"User not found")
+    # if user:
+    #     print(f"User found: {user.id}")
+    # else:
+    #     print(f"User not found")
 
     tmp = event["methodArn"].split(":")
     apiGatewayArnTmp = tmp[5].split("/")
