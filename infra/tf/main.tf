@@ -36,8 +36,8 @@ module "authorizer" {
   attach_tracing_policy   = true
   tracing_mode            = "Active"
 
-  provisioned_concurrent_executions = 10
-  publish                 = true
+  # provisioned_concurrent_executions = 10
+  # publish                 = true
 
   environment_variables = {
     ENVIRONMENT                 = var.environment
@@ -50,6 +50,27 @@ module "authorizer" {
 
   vpc_subnet_ids         = module.vpc.private_subnets
   vpc_security_group_ids = [module.security_group.security_group_id]
+}
+
+
+resource "aws_cloudwatch_event_rule" "every_one_minute" {
+  name                = "every-one-minute"
+  description         = "Fires every one minutes"
+  schedule_expression = "rate(1 minute)"
+}
+
+resource "aws_cloudwatch_event_target" "check_foo_every_one_minute" {
+  rule      = "${aws_cloudwatch_event_rule.every_one_minute.name}"
+  target_id = "lambda"
+  arn       = "${module.authorizer.arn}"
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_check_foo" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = "${module.authorizer.function_name}"
+  principal     = "events.amazonaws.com"
+  source_arn    = "${aws_cloudwatch_event_rule.every_one_minute.arn}"
 }
 
 module "authorizer_api_gw" {
