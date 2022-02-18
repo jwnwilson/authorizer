@@ -52,7 +52,6 @@ module "authorizer" {
   vpc_security_group_ids = [module.security_group.security_group_id]
 }
 
-
 resource "aws_cloudwatch_event_rule" "every_one_minute" {
   name                = "every-one-minute"
   description         = "Fires every one minutes"
@@ -62,13 +61,13 @@ resource "aws_cloudwatch_event_rule" "every_one_minute" {
 resource "aws_cloudwatch_event_target" "check_foo_every_one_minute" {
   rule      = "${aws_cloudwatch_event_rule.every_one_minute.name}"
   target_id = "lambda"
-  arn       = "${module.authorizer.arn}"
+  arn       = "${module.authorizer.lambda_function_arn}"
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_check_foo" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = "${module.authorizer.function_name}"
+  function_name = "${module.authorizer.lambda_function_name}"
   principal     = "events.amazonaws.com"
   source_arn    = "${aws_cloudwatch_event_rule.every_one_minute.arn}"
 }
