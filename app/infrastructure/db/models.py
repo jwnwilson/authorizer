@@ -1,6 +1,6 @@
+import sqlalchemy as sa
 from fastapi_users.db import SQLAlchemyBaseOAuthAccountTable, SQLAlchemyBaseUserTable
 from sqlalchemy.orm import relationship
-import sqlalchemy as sa
 
 from .base import BaseModel
 

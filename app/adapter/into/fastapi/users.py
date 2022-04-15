@@ -3,8 +3,7 @@ import time
 from typing import Optional
 
 import jwt
-from fastapi import Depends, Request, HTTPException, status
-
+from fastapi import Depends, HTTPException, Request, status
 from fastapi_users import BaseUserManager, FastAPIUsers, models
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -15,9 +14,9 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from fastapi_users.jwt import decode_jwt, generate_jwt
 from httpx_oauth.clients.google import GoogleOAuth2
 
+from app.adapter.into.fastapi.exception import ErrorCode
 from app.infrastructure.db.base import get_user_db
 from app.ports.users import User, UserCreate, UserDB, UserUpdate
-from app.adapter.into.fastapi.exception import ErrorCode
 
 SECRET = os.environ["SECRET"]
 
