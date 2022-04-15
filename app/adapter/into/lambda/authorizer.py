@@ -2,6 +2,7 @@ import re
 from typing import Dict, List
 
 from use_case.auth_token import get_user_from_token
+from app.ports.users import UserDB
 
 
 class HttpVerb:
@@ -190,12 +191,24 @@ def lambda_handler(event, context):
 
     token = event["authorizationToken"].replace("Bearer ", "")
     principalId = ""
-    user = get_user_from_token(token)
+    user: UserDB = get_user_from_token(token)
 
     if user:
         print(f"User found: {user.id}")
     else:
         print(f"User not found")
+
+    if not user.is_verified:
+        print(f"User is not active")
+        user = None
+
+    if not user.is_active:
+        print(f"User is not verified")
+        user = None
+
+    if "user" not in user.scopes.split(" "):
+        print(f"User does not have user scope")
+        user = None
 
     tmp = event["methodArn"].split(":")
     apiGatewayArnTmp = tmp[5].split("/")

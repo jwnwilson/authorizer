@@ -3,7 +3,8 @@ import time
 from typing import Optional
 
 import jwt
-from fastapi import Depends, Request
+from fastapi import Depends, Request, HTTPException, status
+
 from fastapi_users import BaseUserManager, FastAPIUsers, models
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -16,6 +17,7 @@ from httpx_oauth.clients.google import GoogleOAuth2
 
 from app.infrastructure.db.base import get_user_db
 from app.ports.users import User, UserCreate, UserDB, UserUpdate
+from app.adapter.into.fastapi.exception import ErrorCode
 
 SECRET = os.environ["SECRET"]
 
@@ -43,6 +45,25 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
         self, user: UserDB, token: str, request: Optional[Request] = None
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
+
+    async def update(
+        self,
+        user_update: models.UU,
+        user: models.UD,
+        safe: bool = False,
+        request: Optional[Request] = None,
+    ) -> models.UD:
+        # Only allow scope update if superuser
+        if user_update.scopes and not user.is_superuser:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={
+                    "code": ErrorCode.INVALID_PERMISSIONS,
+                    "reason": "Only superusers can modify user scopes",
+                },
+            )
+
+        return await super().update(user_update, user, safe, request)
 
 
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):

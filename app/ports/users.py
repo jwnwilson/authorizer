@@ -1,8 +1,10 @@
+from typing import Optional
+
 from fastapi_users import models
 
 
 class User(models.BaseUser):
-    pass
+    scopes: Optional[str]
 
 
 class UserCreate(models.BaseUserCreate):
@@ -10,7 +12,7 @@ class UserCreate(models.BaseUserCreate):
 
 
 class UserUpdate(models.BaseUserUpdate):
-    pass
+    scopes: Optional[str]
 
 
 class UserDB(User, models.BaseUserDB):

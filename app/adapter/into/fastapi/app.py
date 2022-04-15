@@ -1,6 +1,6 @@
 from fastapi import Depends, FastAPI
 
-from app.infrastructure.users import (
+from app.adapter.into.fastapi.users import (
     auth_backend,
     current_active_user,
     fastapi_users,

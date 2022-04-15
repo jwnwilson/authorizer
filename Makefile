@@ -45,3 +45,7 @@ deploy:
 clean:
 	rm **/**/*.pyc
 	rm **/**/__pycache__
+
+delete_db_data:
+	docker volume rm authorizer_db_data
+	docker system prune
