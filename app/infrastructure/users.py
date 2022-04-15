@@ -1,6 +1,6 @@
 import os
-from typing import Optional
 import time
+from typing import Optional
 
 import jwt
 from fastapi import Depends, Request
@@ -51,17 +51,15 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
 
 class JWTNoDBStrategy(JWTStrategy):
     def _get_token_data(self, token) -> dict:
-        """Decode JWT token and get the payload
-        """
+        """Decode JWT token and get the payload"""
         try:
             return decode_jwt(token, self.secret, self.token_audience)
         except jwt.PyJWTError:
             return {}
-    
-    def _check_token_data_expired(self, data) -> Optional[dict]:
-        """Check if JWT token has expired from it's payload
-        """
-        if data['exp'] > time.time():
+
+    def _check_token_data_expired(self, data: dict) -> Optional[dict]:
+        """Check if JWT token has expired from it's payload"""
+        if data["exp"] > time.time():
             return None
         return data
 

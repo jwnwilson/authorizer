@@ -26,7 +26,11 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
-app.include_router(fastapi_users.get_users_router(requires_verification=True), prefix="/users", tags=["users"])
+app.include_router(
+    fastapi_users.get_users_router(requires_verification=True),
+    prefix="/users",
+    tags=["users"],
+)
 app.include_router(
     fastapi_users.get_oauth_router(google_oauth_client, auth_backend, "SECRET"),
     prefix="/auth/google",
