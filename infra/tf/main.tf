@@ -205,7 +205,7 @@ module "db" {
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
   # user cannot be used as it is a reserved word used by the engine"
-  db_name     = "authorizer"
+  name     = "authorizer"
   username = "postgres"
   password = "password"
   port     = 5432
