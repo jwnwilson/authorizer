@@ -208,7 +208,7 @@ def lambda_handler(event, context):
         user = None
 
     if "user" not in user.scopes.split(" "):
-        print(f"User does not have user scope")
+        print(f"User does not have 'user' scope")
         user = None
 
     tmp = event["methodArn"].split(":")

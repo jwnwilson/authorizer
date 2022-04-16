@@ -5,8 +5,8 @@ import jwt
 from fastapi_users.jwt import decode_jwt
 
 from app.adapter.into.fastapi.users import get_jwt_strategy
-from app.ports.users import UserDB
 
+from app.ports.users import UserDB
 SECRET = os.environ["SECRET"]
 
 

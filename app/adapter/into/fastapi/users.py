@@ -15,10 +15,13 @@ from fastapi_users.jwt import decode_jwt, generate_jwt
 from httpx_oauth.clients.google import GoogleOAuth2
 
 from app.adapter.into.fastapi.exception import ErrorCode
+from app.adapter.out.email import EmailService, EmailTemplateData
 from app.infrastructure.db.base import get_user_db
 from app.ports.users import User, UserCreate, UserDB, UserUpdate
 
 SECRET = os.environ["SECRET"]
+EMAIL_ACCESS_TOKEN = os.environ["EMAIL_ACCESS_TOKEN"]
+EMAIL_SERVICE_URL = os.environ["EMAIL_SERVICE_URL"]
 
 
 google_oauth_client = GoogleOAuth2(
@@ -39,11 +42,41 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
         self, user: UserDB, token: str, request: Optional[Request] = None
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
+        email_service = EmailService(
+            service_url=EMAIL_SERVICE_URL,
+            access_token=EMAIL_ACCESS_TOKEN
+        )
+        email_data = EmailTemplateData(
+            user_id=user.id,
+            subject="Password Reset",
+            recipients=[user.email],
+            template_id="password_reset",
+            template_params={
+                "email": user.email,
+                "reset_token": token
+            }
+        )
+        email_service.send_template(email_data)
 
     async def on_after_request_verify(
         self, user: UserDB, token: str, request: Optional[Request] = None
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
+        email_service = EmailService(
+            service_url=EMAIL_SERVICE_URL,
+            access_token=EMAIL_ACCESS_TOKEN
+        )
+        email_data = EmailTemplateData(
+            user_id=user.id,
+            subject="Verify Account",
+            recipients=[user.email],
+            template_id="verify_account",
+            template_params={
+                "email": user.email,
+                "verify_token": token
+            }
+        )
+        email_service.send_template(email_data)
 
     async def update(
         self,
