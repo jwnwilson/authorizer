@@ -43,18 +43,14 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
         email_service = EmailService(
-            service_url=EMAIL_SERVICE_URL,
-            access_token=EMAIL_ACCESS_TOKEN
+            service_url=EMAIL_SERVICE_URL, access_token=EMAIL_ACCESS_TOKEN
         )
         email_data = EmailTemplateData(
             user_id=user.id,
             subject="Password Reset",
             recipients=[user.email],
             template_id="password_reset",
-            template_params={
-                "email": user.email,
-                "reset_token": token
-            }
+            template_params={"email": user.email, "reset_token": token},
         )
         email_service.send_template(email_data)
 
@@ -63,18 +59,14 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
         email_service = EmailService(
-            service_url=EMAIL_SERVICE_URL,
-            access_token=EMAIL_ACCESS_TOKEN
+            service_url=EMAIL_SERVICE_URL, access_token=EMAIL_ACCESS_TOKEN
         )
         email_data = EmailTemplateData(
             user_id=user.id,
             subject="Verify Account",
             recipients=[user.email],
             template_id="verify_account",
-            template_params={
-                "email": user.email,
-                "verify_token": token
-            }
+            template_params={"email": user.email, "verify_token": token},
         )
         email_service.send_template(email_data)
 
@@ -86,7 +78,7 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
         request: Optional[Request] = None,
     ) -> models.UD:
         # Only allow scope update if superuser
-        if user_update.scopes and not user.is_superuser:
+        if user_update.scopes and not user.is_superuser:  # type: ignore
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail={
@@ -95,7 +87,7 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
                 },
             )
 
-        return await super().update(user_update, user, safe, request)
+        return await super().update(user_update, user, safe, request)  # type: ignore
 
 
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
