@@ -9,4 +9,12 @@ logging.getLogger().setLevel(logging.INFO)
 from .app import app
 
 # To plug into lambda
-lambda_handler = Mangum(app)
+mangum_handler = Mangum(app)
+
+
+def lambda_handler(event, context):
+    # Skip if this is an event bridge keep warm event
+    if "detail" in event:
+        logging.debug("Event bridge event, skipping")
+        return
+    return mangum_handler(event, context)
