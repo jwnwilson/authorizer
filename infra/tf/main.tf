@@ -46,6 +46,8 @@ module "authorizer" {
     DB_URL                      = "postgresql+asyncpg://postgres:password@${module.db.db_instance_endpoint}/authorizer"
     GOOGLE_OAUTH_CLIENT_ID      = ""
     GOOGLE_OAUTH_CLIENT_SECRET  = ""
+    EMAIL_ACCESS_TOKEN          = ""
+    EMAIL_SERVICE_URL           = ""
   }
 
   vpc_subnet_ids         = module.vpc.private_subnets
