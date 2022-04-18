@@ -189,7 +189,7 @@ module "security_group" {
 
 module "db" {
   source  = "terraform-aws-modules/rds/aws"
-  version = "~> 3.0"
+  version = "4.2.0"
 
   identifier = "${var.project}-db-${var.environment}"
 
@@ -207,10 +207,10 @@ module "db" {
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
   # user cannot be used as it is a reserved word used by the engine"
-  name     = "authorizer"
-  username = "postgres"
-  password = "password"
-  port     = 5432
+  db_name       = "authorizer"
+  username      = "postgres"
+  password      = "password"
+  port          = 5432
 
   multi_az               = false
   subnet_ids             = module.vpc.private_subnets

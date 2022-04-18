@@ -18,8 +18,11 @@ plan:
 apply:
 	cd tf && terraform apply -auto-approve tfapply
 
+refresh:
+	cd tf && terraform refresh
+
 outputs:
-	cd tf && terraform output
+	cd tf && terraform output -json
 
 destroy:
 	cd tf && terraform destroy

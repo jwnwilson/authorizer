@@ -34,6 +34,10 @@ jobs:
             apk update && apk add bash make
             environment=staging bash scripts/plan.sh
             environment=staging bash scripts/deploy.sh
+      - run:
+          name: migrate db
+          command: |
+            environment=staging bash scripts/migrate_db.sh
   deploy-prod-plan:
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:latest
@@ -58,8 +62,12 @@ jobs:
       - run:
           name: terraform
           command: |
-            apk update && apk add bash make
+            apk update && apk add bash make jq
             environment=production bash scripts/deploy.sh
+      - run:
+          name: migrate db
+          command: |
+            environment=production bash scripts/migrate_db.sh
       - persist_to_workspace:
           root: .
           paths:
