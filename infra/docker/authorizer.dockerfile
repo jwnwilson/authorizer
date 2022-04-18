@@ -14,6 +14,7 @@ ARG INSTALL_DEV=false
 RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --no-dev ; fi"
 
 ADD ./app ${LAMBDA_TASK_ROOT}/app
+ADD ./migrations ${LAMBDA_TASK_ROOT}/migrations
 
 ENV PYTHONPATH ${LAMBDA_TASK_ROOT}/app
 CMD ["app.adapter.into.fastapi.lambda.lambda_handler"]
