@@ -22,7 +22,7 @@ class JWTNoDBStrategy(JWTStrategy):
 
     def _token_data_expired(self, data: dict) -> bool:
         """Check if JWT token has expired from it's payload"""
-        if "exp" in data and data["exp"] > time.time():
+        if "exp" in data and data["exp"] < time.time():
             return True
         return False
 
