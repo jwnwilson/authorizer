@@ -19,9 +19,6 @@ aws lambda invoke \
 
 # Wait for result of lambda
 RESPONSE=`cat response.json`
-
-echo $RESPONSE
-
 STATUS=`jq $RESPONSE .StatusCode`
 
 if [ "$STATUS" != "200" ]; then
