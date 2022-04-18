@@ -31,7 +31,7 @@ jobs:
       - run:
           name: terraform apply
           command: |
-            apk update && apk add bash make
+            apk update && apk add bash make aws-cli jq
             environment=staging bash scripts/plan.sh
             environment=staging bash scripts/deploy.sh
       - run:
@@ -62,7 +62,7 @@ jobs:
       - run:
           name: terraform
           command: |
-            apk update && apk add bash make jq
+            apk update && apk add bash make aws-cli jq
             environment=production bash scripts/deploy.sh
       - run:
           name: migrate db
