@@ -15,10 +15,9 @@ LAMBDA_NAME=`terraform output -raw db_migrator_lambda_name`
 RESULT=`aws lambda invoke --function-name $LAMBDA_NAME --payload '{}' response.json`
 
 # Wait for result of lambda
-echo $RESULT
-cat response.json
+jq '.' response.json
 
-ERROR=`jq $RESULT .FunctionError`
+ERROR=`jq '.FunctionError' <<< $RESULT`
 
 if [ "$ERROR" != "" ]; then
     echo "Error calling migrate DB command"
