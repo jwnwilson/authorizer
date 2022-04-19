@@ -12,16 +12,18 @@ cd infra/tf
 LAMBDA_NAME=`terraform output -raw db_migrator_lambda_name`
 
 # Trigger lambda
-aws lambda invoke \
+RESULT=aws lambda invoke \
     --function-name $LAMBDA_NAME \
     --payload '{}' \
     response.json
 
 # Wait for result of lambda
-RESPONSE=`cat response.json`
-STATUS=`jq $RESPONSE .StatusCode`
+echo $RESULT
+cat response.json
 
-if [ "$STATUS" != "200" ]; then
+ERROR=`jq $RESULT .FunctionError`
+
+if [ "$ERROR" != "" ]; then
     echo "Error calling migrate DB command"
     exit 1
 else
