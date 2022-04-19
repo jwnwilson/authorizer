@@ -12,10 +12,7 @@ cd infra/tf
 LAMBDA_NAME=`terraform output -raw db_migrator_lambda_name`
 
 # Trigger lambda
-RESULT=aws lambda invoke \
-    --function-name $LAMBDA_NAME \
-    --payload '{}' \
-    response.json
+RESULT=`aws lambda invoke --function-name $LAMBDA_NAME --payload '{}' response.json`
 
 # Wait for result of lambda
 echo $RESULT
