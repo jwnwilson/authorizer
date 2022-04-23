@@ -39,6 +39,9 @@ pipeline_destroy:
 bastion_init:
 	cd tf_bastion && terraform init
 
+bastion_refresh:
+	cd tf_bastion && terraform refresh	
+
 bastion_plan:
 	cd tf_bastion && terraform plan
 
