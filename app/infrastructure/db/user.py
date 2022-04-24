@@ -36,7 +36,7 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
             recipients=[user.email],
             template_id="password_reset",
             template_params={"email": user.email, "reset_token": token},
-            attachments=[]
+            attachments=[],
         )
         email_service.send_template(email_data)
 
@@ -53,7 +53,7 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
             recipients=[user.email],
             template_id="verify_account",
             template_params={"email": user.email, "verify_token": token},
-            attachments=[]
+            attachments=[],
         )
         email_service.send_template(email_data)
 
