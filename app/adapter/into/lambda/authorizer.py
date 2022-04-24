@@ -196,6 +196,7 @@ def lambda_handler(event, context):
 
     if user:
         print(f"User found: {user.id}")
+        principalId = str(user.id)
     else:
         print(f"User not found")
 
@@ -221,7 +222,6 @@ def lambda_handler(event, context):
     policy.stage = apiGatewayArnTmp[1]
 
     if user:
-        principalId = str(user.id)
         policy.allowAllMethods()
     else:
         policy.denyAllMethods()
@@ -231,7 +231,6 @@ def lambda_handler(event, context):
 
     if user:
         context = {"user_id": principalId}
-
         authResponse["context"] = context
 
     return authResponse
