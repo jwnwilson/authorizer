@@ -75,6 +75,30 @@ An S3 bucket to hold the terraform state is needed before commands work create t
 
 `jwnwilson-authorizer`
 
+### Set param store values
+
+In order to create our DB we need to set some params in aws.
+
+data "aws_ssm_parameter" "access_token" {
+  name = "/authorizer/${var.environment}/access_token"
+}
+
+data "aws_ssm_parameter" "email_url" {
+  name = "/authorizer/${var.environment}/email_url"
+}
+
+data "aws_ssm_parameter" "secret" {
+  name = "/authorizer/${var.environment}/secret"
+}
+
+data "aws_ssm_parameter" "username" {
+  name = "/authorizer/${var.environment}/username"
+}
+
+data "aws_ssm_parameter" "password" {
+  name = "/authorizer/${var.environment}/password"
+}
+
 ### Create pipeline
 
 First we need to create infra for pipeline and to push a docker image, from the infra/ folder run: 
