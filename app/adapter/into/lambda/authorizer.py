@@ -197,20 +197,20 @@ def lambda_handler(event, context):
     if user:
         print(f"User found: {user.id}")
         principalId = str(user.id)
+
+        if not user.is_verified:
+            print(f"User is not active")
+            user = None
+
+        if not user.is_active:
+            print(f"User is not verified")
+            user = None
+
+        if "user" not in user.scopes.split(" "):
+            print(f"User does not have 'user' scope")
+            user = None
     else:
         print(f"User not found")
-
-    if not user.is_verified:
-        print(f"User is not active")
-        user = None
-
-    if not user.is_active:
-        print(f"User is not verified")
-        user = None
-
-    if "user" not in user.scopes.split(" "):
-        print(f"User does not have 'user' scope")
-        user = None
 
     tmp = event["methodArn"].split(":")
     apiGatewayArnTmp = tmp[5].split("/")
