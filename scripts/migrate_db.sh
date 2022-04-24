@@ -19,7 +19,7 @@ jq '.' response.json
 
 ERROR=`jq '.FunctionError' <<< $RESULT`
 
-if [ "$ERROR" != " null " ]; then
+if [ "$ERROR" != "null" ]; then
     echo "Error calling migrate DB command"
     exit 1
 else

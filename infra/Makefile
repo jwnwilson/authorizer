@@ -6,7 +6,9 @@ TF_VAR_environment=${environment}
 TF_VAR_aws_access_key=${AWS_ACCESS_KEY_ID}
 TF_VAR_aws_secret_key=${AWS_SECRET_ACCESS_KEY}
 TF_VAR_aws_region=${AWS_DEFAULT_REGION}
-TF_VAR_vpc_id=vpc-055676c11fe77915e
+
+# Need to unhardcode these for bastion
+TF_VAR_vpc_id=vpc-00a3ca7c8606de431
 DB_URL=authorizer-db-staging.clfqqiusnlbr.eu-west-1.rds.amazonaws.com
 
 init:
