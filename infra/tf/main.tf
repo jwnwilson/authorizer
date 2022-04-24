@@ -35,6 +35,16 @@ data "aws_ssm_parameter" "secret" {
   name = "/authorizer/${var.environment}/secret"
 }
 
+# This need to be created manually
+data "aws_ssm_parameter" "username" {
+  name = "/authorizer/${var.environment}/username"
+}
+
+# This need to be created manually
+data "aws_ssm_parameter" "password" {
+  name = "/authorizer/${var.environment}/password"
+}
+
 module "authorizer" {
   source                  = "terraform-aws-modules/lambda/aws"
 
@@ -56,15 +66,12 @@ module "authorizer" {
 
   environment_variables = {
     ENVIRONMENT                 = var.environment
-    SECRET                      = "d150fcaa-a124-42ae-9442-6b7388607a9e"
-    # SECRET                      = data.aws_ssm_parameter.access_token.value
+    SECRET                      = data.aws_ssm_parameter.access_token.value
     DB_URL                      = "postgresql+asyncpg://postgres:password@${module.db.db_instance_endpoint}/authorizer"
     GOOGLE_OAUTH_CLIENT_ID      = ""
     GOOGLE_OAUTH_CLIENT_SECRET  = ""
-    EMAIL_ACCESS_TOKEN          = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpc19hY3RpdmUiOnRydWUsImlzX3N1cGVydXNlciI6dHJ1ZSwiaXNfdmVyaWZpZWQiOnRydWUsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiRlaXN6aC9MajF4bm1wOFBFQUx2NC91cjl2Y01Nc0t6Yzg1Ynd3OTVpWFVtMjN2YktPaEtSeSIsInNjb3BlcyI6InVzZXIiLCJ1c2VyX2lkIjoiNDY2OGJkMDctYjFkZC00OWRmLTk5MzMtMDg2MTAyMTg3ZmFlIiwiYXVkIjpbImZhc3RhcGktdXNlcnM6YXV0aCJdLCJleHAiOjE2NTA4MDIxMzZ9.pWP1Z_CzQq6YJqlJBGkOkGzVUZtNG-Cb0VVxVUviaDE"
-    # EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
-    EMAIL_SERVICE_URL           = "https://email-staging.jwnwilson.co.uk"
-    #EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
+    EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
+    EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
   }
 
   vpc_subnet_ids         = module.vpc.private_subnets
@@ -107,15 +114,12 @@ module "authorizer_api_gw" {
 
   environment_variables = {
     ENVIRONMENT                 = var.environment
-    SECRET                      = "d150fcaa-a124-42ae-9442-6b7388607a9e"
-    # SECRET                      = data.aws_ssm_parameter.access_token.value
+    SECRET                      = data.aws_ssm_parameter.access_token.value
     DB_URL                      = "postgresql+asyncpg://postgres:password@${module.db.db_instance_endpoint}/authorizer"
     GOOGLE_OAUTH_CLIENT_ID      = ""
     GOOGLE_OAUTH_CLIENT_SECRET  = ""
-    EMAIL_ACCESS_TOKEN          = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpc19hY3RpdmUiOnRydWUsImlzX3N1cGVydXNlciI6dHJ1ZSwiaXNfdmVyaWZpZWQiOnRydWUsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiRlaXN6aC9MajF4bm1wOFBFQUx2NC91cjl2Y01Nc0t6Yzg1Ynd3OTVpWFVtMjN2YktPaEtSeSIsInNjb3BlcyI6InVzZXIiLCJ1c2VyX2lkIjoiNDY2OGJkMDctYjFkZC00OWRmLTk5MzMtMDg2MTAyMTg3ZmFlIiwiYXVkIjpbImZhc3RhcGktdXNlcnM6YXV0aCJdLCJleHAiOjE2NTA4MDIxMzZ9.pWP1Z_CzQq6YJqlJBGkOkGzVUZtNG-Cb0VVxVUviaDE"
-    # EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
-    EMAIL_SERVICE_URL           = "https://email-staging.jwnwilson.co.uk"
-    #EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
+    EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
+    EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
   }
 
   vpc_subnet_ids         = module.vpc.private_subnets
@@ -138,15 +142,12 @@ module "db_migrator" {
 
   environment_variables = {
     ENVIRONMENT                 = var.environment
-    SECRET                      = "d150fcaa-a124-42ae-9442-6b7388607a9e"
-    # SECRET                      = data.aws_ssm_parameter.access_token.value
+    SECRET                      = data.aws_ssm_parameter.access_token.value
     DB_URL                      = "postgresql+asyncpg://postgres:password@${module.db.db_instance_endpoint}/authorizer"
     GOOGLE_OAUTH_CLIENT_ID      = ""
     GOOGLE_OAUTH_CLIENT_SECRET  = ""
-    EMAIL_ACCESS_TOKEN          = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpc19hY3RpdmUiOnRydWUsImlzX3N1cGVydXNlciI6dHJ1ZSwiaXNfdmVyaWZpZWQiOnRydWUsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiRlaXN6aC9MajF4bm1wOFBFQUx2NC91cjl2Y01Nc0t6Yzg1Ynd3OTVpWFVtMjN2YktPaEtSeSIsInNjb3BlcyI6InVzZXIiLCJ1c2VyX2lkIjoiNDY2OGJkMDctYjFkZC00OWRmLTk5MzMtMDg2MTAyMTg3ZmFlIiwiYXVkIjpbImZhc3RhcGktdXNlcnM6YXV0aCJdLCJleHAiOjE2NTA4MDIxMzZ9.pWP1Z_CzQq6YJqlJBGkOkGzVUZtNG-Cb0VVxVUviaDE"
-    # EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
-    EMAIL_SERVICE_URL           = "https://email-staging.jwnwilson.co.uk"
-    #EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
+    EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
+    EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
   }
 
   vpc_subnet_ids         = module.vpc.private_subnets
@@ -212,17 +213,6 @@ module "security_group" {
   ]
 }
 
-# This need to be created manually
-data "aws_ssm_parameter" "username" {
-  name = "/authorizer/${var.environment}/username"
-}
-
-# This need to be created manually
-data "aws_ssm_parameter" "password" {
-  name = "/authorizer/${var.environment}/password"
-}
-
-
 module "db" {
   source  = "terraform-aws-modules/rds/aws"
   version = "~> 3.0"
@@ -243,12 +233,10 @@ module "db" {
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
   # user cannot be used as it is a reserved word used by the engine"
-  name          = "authorizer"
-  username      = "postgres"
-  # username                      = data.aws_ssm_parameter.username.value
-  password      = "password"
-  # password                      = data.aws_ssm_parameter.password.value
-  port          = 5432
+  name                  = "authorizer"
+  username              = data.aws_ssm_parameter.username.value
+  password              = data.aws_ssm_parameter.password.value
+  port                  = 5432
 
   multi_az               = false
   subnet_ids             = module.vpc.private_subnets
