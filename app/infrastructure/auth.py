@@ -60,5 +60,5 @@ class JWTNoDBStrategy(JWTStrategy):
         return generate_jwt(data, self.secret, self.lifetime_seconds)
 
 
-def get_jwt_strategy(lifetime_seconds=3600) -> JWTNoDBStrategy:
+def get_jwt_strategy(lifetime_seconds:int=3600) -> JWTNoDBStrategy:
     return JWTNoDBStrategy(secret=SECRET, lifetime_seconds=lifetime_seconds)

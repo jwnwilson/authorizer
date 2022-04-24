@@ -46,8 +46,8 @@ module "authorizer" {
     DB_URL                      = "postgresql+asyncpg://postgres:password@${module.db.db_instance_endpoint}/authorizer"
     GOOGLE_OAUTH_CLIENT_ID      = ""
     GOOGLE_OAUTH_CLIENT_SECRET  = ""
-    EMAIL_ACCESS_TOKEN          = ""
-    EMAIL_SERVICE_URL           = ""
+    EMAIL_ACCESS_TOKEN          = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpc19hY3RpdmUiOnRydWUsImlzX3N1cGVydXNlciI6dHJ1ZSwiaXNfdmVyaWZpZWQiOnRydWUsImhhc2hlZF9wYXNzd29yZCI6IiQyYiQxMiRlaXN6aC9MajF4bm1wOFBFQUx2NC91cjl2Y01Nc0t6Yzg1Ynd3OTVpWFVtMjN2YktPaEtSeSIsInNjb3BlcyI6InVzZXIiLCJ1c2VyX2lkIjoiNDY2OGJkMDctYjFkZC00OWRmLTk5MzMtMDg2MTAyMTg3ZmFlIiwiYXVkIjpbImZhc3RhcGktdXNlcnM6YXV0aCJdLCJleHAiOjE2NTA3OTcyODd9.IAQh2iC-Iuu_BH9Z9BTI5pRb4Yy2V5pE57E14ZRvpc8"
+    EMAIL_SERVICE_URL           = "https://email-staging.jwnwilson.co.uk"
   }
 
   vpc_subnet_ids         = module.vpc.private_subnets
