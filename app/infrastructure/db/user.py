@@ -31,11 +31,12 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
             service_url=EMAIL_SERVICE_URL, access_token=EMAIL_ACCESS_TOKEN
         )
         email_data = EmailTemplateData(
-            user_id=user.id,
+            user_id=str(user.id),
             subject="Password Reset",
             recipients=[user.email],
             template_id="password_reset",
             template_params={"email": user.email, "reset_token": token},
+            attachments=[]
         )
         email_service.send_template(email_data)
 
@@ -47,11 +48,12 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
             service_url=EMAIL_SERVICE_URL, access_token=EMAIL_ACCESS_TOKEN
         )
         email_data = EmailTemplateData(
-            user_id=user.id,
+            user_id=str(user.id),
             subject="Verify Account",
             recipients=[user.email],
             template_id="verify_account",
             template_params={"email": user.email, "verify_token": token},
+            attachments=[]
         )
         email_service.send_template(email_data)
 

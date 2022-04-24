@@ -17,7 +17,7 @@ class EmailService(EmailAdapter):
         self.access_token = access_token
 
     def _validate_response(self, response):
-        if response.status == 200:
+        if response.status_code == 200:
             return
 
         error_msg = f"Error sending email to user: {response.content}"
@@ -26,7 +26,7 @@ class EmailService(EmailAdapter):
 
     def _send_email_request(self, url, data: dict):
         return requests.post(
-            url, data=data, headers={"Authorization": f"Bearer {self.access_token}"}
+            url, json=data, headers={"Authorization": f"Bearer {self.access_token}"}
         )
 
     def send(self, email_data: EmailData):
