@@ -60,6 +60,10 @@ In order to add this authorizer to another service, we need to add it to it's AP
 
 https://docs.aws.amazon.com/apigateway/latest/developerguide/configure-api-gateway-lambda-authorization-with-console.html
 
+Here is a diagram showing how this project plugs into other microservices.
+
+![](./docs/infra.png)
+
 # Deploying to AWS
 
 Deployment is done when we merge a branch into main on github and the following is orchestrated through the .circleci/config.yml. Before the pipeline will work we require some inital pipeline setup.
@@ -77,7 +81,7 @@ An S3 bucket to hold the terraform state is needed before commands work create t
 
 ### Set param store values
 
-In order to create our DB we need to set some params in aws.
+In order to create our DB we need to set some params in aws, this has to be done manually in the AWS console.
 
 data "aws_ssm_parameter" "access_token" {
   name = "/authorizer/${var.environment}/access_token"
@@ -154,6 +158,8 @@ Once the machine build access with:
 To setup a local port to access the RDS DB with run:
 
 `cd infra && make bastion_db_tunnel` 
+
+This is how DB migrations are currently done.
 
 # Domain Driven Development
 
