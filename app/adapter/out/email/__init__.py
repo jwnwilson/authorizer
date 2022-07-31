@@ -30,7 +30,9 @@ class EmailService(EmailAdapter):
         )
 
     def send(self, email_data: EmailData):
-        logger.info(f"Sending Email to user: {email_data.user_id}")
+        logger.info(
+            f"Sending Email to user: {email_data.user_id}, data: {email_data.dict()}"
+        )
         resp = self._send_email_request(
             self.service_url + "/email/send", email_data.dict()
         )
@@ -38,7 +40,9 @@ class EmailService(EmailAdapter):
         logger.info(f"Sent Email to user: {email_data.user_id}")
 
     def send_template(self, email_data: EmailTemplateData):
-        logger.info(f"Sending Template Email to user: {email_data.user_id}")
+        logger.info(
+            f"Sending Template Email to user: {email_data.user_id}, data: {email_data.dict()}"
+        )
         resp = self._send_email_request(
             self.service_url + "/email/send-template", email_data.dict()
         )

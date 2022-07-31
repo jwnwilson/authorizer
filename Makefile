@@ -12,10 +12,7 @@ upgrade_db:
 	${DOCKER_COMMAND} run authorizer bash -c "alembic upgrade head"
 
 build:
-	${DOCKER_COMMAND} build --build-arg INSTALL_DEV=true
-
-build_prod:
-	${DOCKER_COMMAND} build
+	bash ./scripts/build.sh
 
 # push last build image to ECR
 push:
