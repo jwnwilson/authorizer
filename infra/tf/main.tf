@@ -45,6 +45,12 @@ data "aws_ssm_parameter" "password" {
   name = "/authorizer/${var.environment}/password"
 }
 
+# This need to be created manually
+data "aws_ssm_parameter" "service_token_user" {
+  name = "/authorizer/${var.environment}/service_token_user"
+}
+
+
 module "authorizer" {
   source                  = "terraform-aws-modules/lambda/aws"
 
@@ -147,6 +153,35 @@ module "db_migrator" {
     GOOGLE_OAUTH_CLIENT_SECRET  = ""
     EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
     EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
+  }
+
+  vpc_subnet_ids         = module.vpc.private_subnets
+  vpc_security_group_ids = [module.security_group.security_group_id]
+}
+
+module "service_token_generator" {
+  source                  = "terraform-aws-modules/lambda/aws"
+
+  function_name           = "authorizer_service_token_gen_${var.environment}"
+  description             = "Authorizer for service token gen"
+
+  create_package          = false
+
+  image_uri               = "${var.ecr_api_url}:${var.docker_tag}"
+  image_config_command    = ["app.adapter.into.lambda.service_token.lambda_handler"]
+  package_type            = "Image"
+  attach_network_policy   = true
+  timeout                 = 30
+
+  environment_variables = {
+    ENVIRONMENT                 = var.environment
+    SECRET                      = data.aws_ssm_parameter.access_token.value
+    DB_URL                      = "postgresql+asyncpg://postgres:password@${module.db.db_instance_endpoint}/authorizer"
+    GOOGLE_OAUTH_CLIENT_ID      = ""
+    GOOGLE_OAUTH_CLIENT_SECRET  = ""
+    EMAIL_ACCESS_TOKEN          = data.aws_ssm_parameter.access_token.value
+    EMAIL_SERVICE_URL           = data.aws_ssm_parameter.email_url.value
+    SERVICE_TOKEN_USER          = data.aws_ssm_parameter.service_token_user.value
   }
 
   vpc_subnet_ids         = module.vpc.private_subnets

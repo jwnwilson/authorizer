@@ -25,7 +25,7 @@ stop:
 	${DOCKER_COMMAND} down
 
 generate_service_token:
-	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "python -m app.adapter.into.cli.main -c service_token -u f1058253-48e5-4a27-8664-26fc410be138"
+	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "python -m app.adapter.into.cli.main -c service_token -u 4668bd07-b1dd-49df-9933-086102187fae"
 
 test:
 	${DOCKER_COMMAND} run ${DOCKER_NAME} bash -c "pytest -s app"
