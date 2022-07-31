@@ -201,6 +201,16 @@ module "security_group" {
       cidr_blocks = module.vpc.vpc_cidr_block
     },
   ]
+
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "tcp"
+      description = "Allow all outgoing connections"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+  ]
 }
 
 module "db" {
