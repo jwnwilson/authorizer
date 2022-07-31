@@ -177,6 +177,10 @@ module "vpc" {
     Tier = "Public"
   }
 
+  #   If we attach our lambda to a VPC then we have to use a nat gateway for internet access
+  #   Do not do this as this is expensive.
+  enable_nat_gateway = true
+
   tags = {
     project = var.project
     Environment = var.environment
@@ -204,12 +208,19 @@ module "security_group" {
 
   egress_with_cidr_blocks = [
     {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "PostgreSQL access from within VPC"
+      cidr_blocks = module.vpc.vpc_cidr_block
+    },
+    {
       from_port   = 0
       to_port     = 0
       protocol    = "tcp"
       description = "Allow all outgoing connections"
       cidr_blocks = "0.0.0.0/0"
-    },
+    }
   ]
 }
 
