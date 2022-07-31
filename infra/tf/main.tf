@@ -208,7 +208,7 @@ module "security_group" {
       to_port     = 0
       protocol    = "tcp"
       description = "Allow all outgoing connections"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = "0.0.0.0/0"
     },
   ]
 }
