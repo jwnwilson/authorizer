@@ -178,7 +178,7 @@ module "vpc" {
 
   #   If we attach our lambda to a VPC then we have to use a nat gateway for internet access
   #   Do not do this as this is expensive.
-  enable_nat_gateway = true
+  # enable_nat_gateway = true
 
   tags = {
     project = var.project
