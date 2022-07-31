@@ -55,8 +55,8 @@ module "authorizer" {
 
   image_uri               = "${var.ecr_api_url}:${var.docker_tag}"
   package_type            = "Image"
-  # vpc_subnet_ids         = module.vpc.private_subnets
-  # vpc_security_group_ids = [module.security_group.security_group_id]
+  vpc_subnet_ids         = module.vpc.private_subnets
+  vpc_security_group_ids = [module.security_group.security_group_id]
   attach_network_policy   = true
   timeout                 = 30
 
@@ -178,7 +178,7 @@ module "vpc" {
 
   #   If we attach our lambda to a VPC then we have to use a nat gateway for internet access
   #   Do not do this as this is expensive.
-  # enable_nat_gateway = true
+  enable_nat_gateway = true
 
   tags = {
     project = var.project
