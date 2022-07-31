@@ -201,12 +201,6 @@ module "security_group" {
       cidr_blocks = module.vpc.vpc_cidr_block
     },
   ]
-
-  egress_with_cidr_blocks = [
-    {
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]
 }
 
 module "db" {
