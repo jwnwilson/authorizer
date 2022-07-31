@@ -165,7 +165,6 @@ module "vpc" {
   cidr = "10.10.0.0/16"
 
   azs  = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-
   public_subnets  = ["10.10.1.0/24", "10.10.2.0/24", "10.10.3.0/24"]
   private_subnets = ["10.10.101.0/24", "10.10.102.0/24", "10.10.103.0/24"]
 
@@ -176,9 +175,11 @@ module "vpc" {
     Tier = "Public"
   }
 
-  #   If we attach our lambda to a VPC then we have to use a nat gateway for internet access
-  #   Do not do this as this is expensive.
-  # enable_nat_gateway = true
+  # If we attach our lambda to a VPC then we have to use a nat gateway for internet access
+  # Note this costs money
+  enable_nat_gateway  = true
+  single_nat_gateway  = true
+  one_nat_gateway_per_az = false
 
   tags = {
     project = var.project
@@ -209,14 +210,14 @@ module "security_group" {
     {
       from_port   = 5432
       to_port     = 5432
-      protocol    = "tcp"
+      protocol    = -1
       description = "PostgreSQL access from within VPC"
       cidr_blocks = module.vpc.vpc_cidr_block
     },
     {
       from_port   = 0
       to_port     = 0
-      protocol    = "tcp"
+      protocol    = -1
       description = "Allow all outgoing connections"
       cidr_blocks = "0.0.0.0/0"
     }
