@@ -203,7 +203,9 @@ module "security_group" {
   ]
 
   egress_with_cidr_blocks = [
-    "0.0.0.0/0"
+    {
+      cidr_blocks = "0.0.0.0/0"
+    }
   ]
 }
 
