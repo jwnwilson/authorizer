@@ -17,7 +17,8 @@ module "api_gateway" {
   lambda_invoke_arn = module.authorizer.lambda_function_invoke_arn
   lambda_name       = module.authorizer.lambda_function_name
   domain            = "jwnwilson.co.uk"
-  api_subdomain     = "auth-${var.environment}" 
+  api_subdomain     = "auth-${var.environment}"
+  project           = "authorizer"
 }
 
 # This need to be created manually
