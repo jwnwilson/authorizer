@@ -213,7 +213,7 @@ module "vpc" {
 
   # If we attach our lambda to a VPC then we have to use a nat gateway for internet access
   # Note this costs money
-  enable_nat_gateway  = true
+  enable_nat_gateway  = false
   single_nat_gateway  = true
   one_nat_gateway_per_az = false
 
