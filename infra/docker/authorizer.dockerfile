@@ -1,6 +1,7 @@
 FROM public.ecr.aws/lambda/python:3.9
 
 # Install Poetry
+ENV PATH="/root/.local/bin:$PATH"
 RUN curl -sSL https://install.python-poetry.org | python - && \
     poetry config virtualenvs.create false
 
