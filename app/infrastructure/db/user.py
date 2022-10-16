@@ -27,6 +27,8 @@ class UserManager(BaseUserManager[UserCreate, UserDB]):
         self, user: UserDB, token: str, request: Optional[Request] = None
     ):
         print(f"User {user.id} has forgot their password. Reset token: {token}")
+        # This needs to be modified to put task in queue instead of make HTTP request
+        # HTTP requets will fail without nat gateway which is disabled due to cost
         email_service = EmailService(
             service_url=EMAIL_SERVICE_URL, access_token=EMAIL_ACCESS_TOKEN
         )

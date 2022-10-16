@@ -170,4 +170,5 @@ The goal is to avoid coupling logic so that it can be re-used across projects.
 
 # To Do
 
+- Change email service to put SQS message directly on email service queue to avoid needing nat gateway.
 - Automate DB migrations with alembic on lamdba in circle
